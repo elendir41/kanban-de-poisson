@@ -1,10 +1,10 @@
 type SucceedResponse<T> = {
-  success: true;
   data: T;
+  error?: undefined
 };
 
 type FailedResponse = {
-  success: false;
+  data?: undefined
   error: string;
 };
 

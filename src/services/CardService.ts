@@ -8,10 +8,8 @@ import axios, { AxiosInstance } from "axios";
 export default class CardService {
   private readonly service: AxiosInstance;
 
-  constructor() {
-    this.service = axios.create({
-      baseURL: `${import.meta.env.VITE_KANBAN_API_URL}/cards`,
-    });
+  constructor(axiosService: AxiosInstance) {
+    this.service = axiosService;
   }
 
   async updateCard(id: string, card: CardCreateForm): Promise<Response<CardDto>> {

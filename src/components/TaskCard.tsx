@@ -39,7 +39,7 @@ export default function TaskCard({ card }: TaskCardProps) {
 
   const onUpdateCard = useCallback(async () => {
     const response = await onUpdate(card);
-    if (response.success) {
+    if (response.data) {
       toast({ title: "La carte a été mise à jour" });
       setTitle(response.data.card.title);
       setBody(response.data.card.body);
@@ -50,7 +50,7 @@ export default function TaskCard({ card }: TaskCardProps) {
 
   const onDeleteCard = useCallback(async () => {
     const response = await onDelete(card.id);
-    if (response.success) {
+    if (response.data) {
       toast({ title: "La carte a été supprimée" });
     } else {
       toast({ title: response.error, variant: "destructive" });

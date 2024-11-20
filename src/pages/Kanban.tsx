@@ -82,7 +82,7 @@ export default function Kanban() {
       const draggedCard = cards.find((card) => card.id === draggedCardId);
       if (draggedCard) {
         const response = await onMoveTo(draggedCardId, newColumnId, draggedCard);
-        if (!response.success) {
+        if (!response.data) {
           toast({ title: response.error, variant: "destructive" });
         }
       }
@@ -97,7 +97,7 @@ export default function Kanban() {
           rank: parseInt(newRank),
         };
         const response = await onUpdate(updatedCard);
-        if (!response.success) {
+        if (!response.data) {
           toast({ title: response.error, variant: "destructive" });
         }
       }
