@@ -44,7 +44,7 @@ export default function TaskCard({ card }: TaskCardProps) {
       setTitle(response.data.card.title);
       setBody(response.data.card.body);
     } else {
-      toast({ title: response.error, variant: "destructive" });
+      toast({ title: response.error.message, variant: "destructive" });
     }
   }, [card, title, body, onUpdate]);
 
@@ -53,7 +53,7 @@ export default function TaskCard({ card }: TaskCardProps) {
     if (response.data) {
       toast({ title: "La carte a été supprimée" });
     } else {
-      toast({ title: response.error, variant: "destructive" });
+      toast({ title: response.error.message, variant: "destructive" });
     }
   }, [card, onDelete]);
 

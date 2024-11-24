@@ -1,4 +1,3 @@
-import { useParams } from "react-router-dom";
 import { closestCorners, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import Column from "@/components/column";
 import useCrudCard from "@/hooks/useCrudCard";
@@ -59,7 +58,7 @@ const cards: Card[] = [
 ];
 
 export default function Kanban() {
-  let params = useParams();
+  // let params = useParams();
 
   const { toast } = useToast();
   const { onMoveTo, onUpdate } = useCrudCard();
@@ -83,7 +82,7 @@ export default function Kanban() {
       if (draggedCard) {
         const response = await onMoveTo(draggedCardId, newColumnId, draggedCard);
         if (!response.data) {
-          toast({ title: response.error, variant: "destructive" });
+          toast({ title: response.error.message, variant: "destructive" });
         }
       }
     }
@@ -98,7 +97,7 @@ export default function Kanban() {
         };
         const response = await onUpdate(updatedCard);
         if (!response.data) {
-          toast({ title: response.error, variant: "destructive" });
+          toast({ title: response.error.message, variant: "destructive" });
         }
       }
     }

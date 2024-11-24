@@ -5,7 +5,7 @@ type SucceedResponse<T> = {
 
 type FailedResponse = {
   data?: undefined
-  error: string;
+  error: { message: string };
 };
 
 type Response<T> = SucceedResponse<T> | FailedResponse;
