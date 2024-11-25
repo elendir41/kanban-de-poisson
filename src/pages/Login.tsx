@@ -8,6 +8,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useState} from "react";
 import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
+import {useNavigate} from "react-router-dom";
 
 export default function Login() {
   const {
@@ -17,6 +18,8 @@ export default function Login() {
   } = useForm<LoginCredentials>({
     resolver: zodResolver(LoginCredentialsSchema),
   });
+
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const authService = useServiceContext().authService;
@@ -35,7 +38,7 @@ export default function Login() {
       setError("");
       setIsLoading(false);
 
-      window.location.href = "/";
+      navigate("/")
     });
   };
 
@@ -117,7 +120,7 @@ export default function Login() {
         </div>
 
         <Button
-          onClick={() => window.location.href = "/register"}
+          onClick={() => navigate("/register")}
           variant="secondary"
           className="w-full flex items-center justify-center gap-2"
         >

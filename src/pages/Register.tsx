@@ -8,6 +8,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {RegisterCredentials, RegisterCredentialsSchema} from "@/models/schema/user-credentials.type.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
+import {useNavigate} from "react-router-dom";
 
 export default function Register() {
   const {
@@ -17,6 +18,8 @@ export default function Register() {
   } = useForm<RegisterCredentials>({
     resolver: zodResolver(RegisterCredentialsSchema),
   });
+
+  const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const authService = useServiceContext().authService;
@@ -35,7 +38,7 @@ export default function Register() {
       setError("");
       setIsLoading(false);
 
-      window.location.href = "/login";
+        navigate("/login")
     });
   };
 
@@ -139,7 +142,7 @@ export default function Register() {
         </div>
 
         <Button
-          onClick={() => window.location.href = "/login"}
+          onClick={() => navigate("/login")}
           variant="secondary"
           className="w-full flex items-center justify-center gap-2"
         >
