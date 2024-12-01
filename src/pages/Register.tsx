@@ -1,34 +1,34 @@
 import {useForm} from "react-hook-form";
-import {LoginCredentials, LoginCredentialsSchema} from "@/models/schema/user-credentials.type.ts";
+import React, {useState} from "react";
 import {useServiceContext} from "@/context/ServiceContext.ts";
 import underTheSea from '@/assets/images/under-the-sea.png';
 import {Input} from "@/components/ui/input.tsx";
 import {cn} from "@/lib/utils.ts";
 import {Button} from "@/components/ui/button.tsx";
+import {RegisterCredentials, RegisterCredentialsSchema} from "@/models/schema/user-credentials.type.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {useState} from "react";
 import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
 import {useNavigate} from "react-router-dom";
 
-export default function Login() {
+export default function Register() {
   const {
-    handleSubmit,
     register,
+    handleSubmit,
     formState: {errors},
-  } = useForm<LoginCredentials>({
-    resolver: zodResolver(LoginCredentialsSchema),
+  } = useForm<RegisterCredentials>({
+    resolver: zodResolver(RegisterCredentialsSchema),
   });
 
   const navigate = useNavigate();
 
   const [error, setError] = useState("");
   const authService = useServiceContext().authService;
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const onSubmit = (formData: LoginCredentials) => {
+  const onSubmit = (formData: RegisterCredentials) => {
     setIsLoading(true);
     setError("");
-    authService.login(formData.username, formData.password).then((res) => {
+    authService.register(formData.username, formData.password).then((res) => {
       if (res.error) {
         setError(res.error.message);
         setIsLoading(false);
@@ -38,7 +38,7 @@ export default function Login() {
       setError("");
       setIsLoading(false);
 
-      navigate("/")
+        navigate("/login")
     });
   };
 
@@ -54,7 +54,7 @@ export default function Login() {
       <div className="absolute inset-0 bg-black bg-opacity-20"></div>
 
       <div className="w-full max-w-md p-8 space-y-6 bg-white bg-opacity-50 rounded-lg shadow-md backdrop-blur-md">
-        <h2 className="text-2xl font-bold text-center text-gray-700">Login</h2>
+        <h2 className="text-2xl font-bold text-center text-gray-700">Register</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Username */}
           <div>
@@ -98,6 +98,28 @@ export default function Login() {
             )}
           </div>
 
+          {/* Password confirmation */}
+          <div>
+            <label htmlFor="passwordConfirmation" className="block text-sm font-medium text-gray-700">
+              Password Confirmation
+            </label>
+            <Input
+              id="passwordConfirmation"
+              type="password"
+              {...register("passwordConfirmation")}
+              className={cn(
+                "bg-white",
+                errors.passwordConfirmation
+                  ? "border-destructive focus:ring-destructive"
+                  : "border-gray-300 focus:ring-primary"
+              )}
+            />
+            {errors.passwordConfirmation && (
+              <p className="mt-1 text-sm text-destructive">{errors.passwordConfirmation.message}</p>
+            )}
+          </div>
+
+
           {/* Error Message */}
           {error && <p className="text-sm text-destructive">{error}</p>}
 
@@ -109,7 +131,7 @@ export default function Login() {
             disabled={isLoading}
           >
             {isLoading && (<LoadingSpinner/>)}
-            {isLoading ? "Loading..." : "Login"}
+            {isLoading ? "Loading..." : "Register"}
           </Button>
         </form>
 
@@ -120,13 +142,12 @@ export default function Login() {
         </div>
 
         <Button
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/login")}
           variant="secondary"
           className="w-full flex items-center justify-center gap-2"
         >
-          Register
+          Login
         </Button>
-
       </div>
     </div>
   );
