@@ -1,5 +1,12 @@
-import React from "react";
+import { Button } from "@/components/ui/button";
+import useLogOut from "@/hooks/useLogout";
 
 export default function Home() {
-  return <div>Home</div>;
+  const logOut = useLogOut();
+
+  return (
+    <div>
+      <Button onClick={logOut}>Logout</Button>
+    </div>
+  );
 }
