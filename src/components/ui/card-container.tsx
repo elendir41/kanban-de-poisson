@@ -1,37 +1,29 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useCallback, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "./card";
+import TaskCardModal from "../TaskCardModal";
 import TCard from "@/models/card.type";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import TaskCardModal from "./TaskCardModal";
-import { useCallback, useState } from "react";
+import { DraggableAttributes } from "@dnd-kit/core";
+import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import useCrudCard from "@/hooks/useCrudCard";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 
 type TaskCardProps = {
   card: TCard;
+  setNodeRef?: (node: HTMLElement | null) => void;
+  style?: React.CSSProperties;
+  attributes?: DraggableAttributes;
+  listeners?: SyntheticListenerMap;
+  className?: string;
 };
 
-export default function TaskCard({ card }: TaskCardProps) {
-  const { toast } = useToast();
-
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: `${card.id}`,
-    data: { type: "card" },
-  });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    zIndex: isDragging ? 1 : 0,
-  };
-
+export default function CardContainer({
+  card,
+  setNodeRef,
+  style,
+  attributes,
+  listeners,
+  className
+}: TaskCardProps) {
   const [title, setTitle] = useState(card.title);
   const [body, setBody] = useState(card.body);
 
@@ -63,11 +55,15 @@ export default function TaskCard({ card }: TaskCardProps) {
       style={style}
       {...listeners}
       {...attributes}
-      className=""
+      className={className}
     >
-      <CardHeader className="flex-row w-full justify-between">
+      <CardHeader className="flex-row w-full justify-between relative">
         <CardTitle>{title}</CardTitle>
-        <TaskCardModal card={card} onDelete={onDeleteCard} onUpdate={onUpdateCard}/>
+        <TaskCardModal
+          card={card}
+          onDelete={onDeleteCard}
+          onUpdate={onUpdateCard}
+        />
       </CardHeader>
       <CardContent>
         <p>{body}</p>
