@@ -1,4 +1,3 @@
-import Card from "@/models/card.type";
 import CardDto from "@/models/dto/cardDto.type";
 import ColumnDto from "@/models/dto/columnDto.type";
 import { create } from "zustand";

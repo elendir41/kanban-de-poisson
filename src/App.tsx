@@ -4,8 +4,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Kanban from "./pages/Kanban";
 import Register from "./pages/Register";
-import DragAndDropProvider from "./provider/DragAndDropProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./pages/404";
 
 function App() {
   return (
@@ -29,6 +29,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

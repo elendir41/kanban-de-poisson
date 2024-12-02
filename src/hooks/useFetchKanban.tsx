@@ -13,8 +13,10 @@ export default function useFetchKanban(boardId: string) {
 
   useEffect(() => {
     setCurrentBoardId(boardId);
-    
+
     async function fetchKanban() {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
       try {
         const kanban = await kanbanService.getBoard(boardId);
         if (kanban.error) {
