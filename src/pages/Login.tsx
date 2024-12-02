@@ -1,20 +1,23 @@
-import {useForm} from "react-hook-form";
-import {LoginCredentials, LoginCredentialsSchema} from "@/models/schema/user-credentials.type.ts";
-import {useServiceContext} from "@/context/ServiceContext.ts";
-import underTheSea from '@/assets/images/under-the-sea.png';
-import {Input} from "@/components/ui/input.tsx";
-import {cn} from "@/lib/utils.ts";
-import {Button} from "@/components/ui/button.tsx";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useState} from "react";
-import {LoadingSpinner} from "@/components/ui/loading-spinner.tsx";
-import {useNavigate} from "react-router-dom";
+import { useForm } from "react-hook-form";
+import {
+  LoginCredentials,
+  LoginCredentialsSchema,
+} from "@/models/schema/user-credentials.type.ts";
+import { useServiceContext } from "@/context/ServiceContext.ts";
+import underTheSea from "@/assets/images/under-the-sea.png";
+import { Input } from "@/components/ui/input.tsx";
+import { cn } from "@/lib/utils.ts";
+import { Button } from "@/components/ui/button.tsx";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { LoadingSpinner } from "@/components/ui/loading-spinner.tsx";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const {
     handleSubmit,
     register,
-    formState: {errors},
+    formState: { errors },
   } = useForm<LoginCredentials>({
     resolver: zodResolver(LoginCredentialsSchema),
   });
@@ -38,7 +41,7 @@ export default function Login() {
       setError("");
       setIsLoading(false);
 
-      navigate("/")
+      navigate("/");
     });
   };
 
@@ -58,7 +61,10 @@ export default function Login() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Username */}
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700"
+            >
               Username
             </label>
             <Input
@@ -73,13 +79,18 @@ export default function Login() {
               )}
             />
             {errors.username && (
-              <p className="mt-1 text-sm text-destructive">{errors.username.message}</p>
+              <p className="mt-1 text-sm text-destructive">
+                {errors.username.message}
+              </p>
             )}
           </div>
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <Input
@@ -94,7 +105,9 @@ export default function Login() {
               )}
             />
             {errors.password && (
-              <p className="mt-1 text-sm text-destructive">{errors.password.message}</p>
+              <p className="mt-1 text-sm text-destructive">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -108,15 +121,15 @@ export default function Login() {
             className="w-full flex items-center justify-center gap-2"
             disabled={isLoading}
           >
-            {isLoading && (<LoadingSpinner/>)}
+            {isLoading && <LoadingSpinner />}
             {isLoading ? "Loading..." : "Login"}
           </Button>
         </form>
 
         <div className="flex items-center justify-center space-x-2">
-          <hr className="w-full border-t border-gray-300"/>
+          <hr className="w-full border-t border-gray-300" />
           <span className="text-sm text-gray-600">ou</span>
-          <hr className="w-full border-t border-gray-300"/>
+          <hr className="w-full border-t border-gray-300" />
         </div>
 
         <Button
@@ -126,7 +139,6 @@ export default function Login() {
         >
           Register
         </Button>
-
       </div>
     </div>
   );
