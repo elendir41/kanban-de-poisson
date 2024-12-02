@@ -1,34 +1,50 @@
-import Card from "@/models/card.type";
 import {
   SortableContext,
   useSortable,
-  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import TaskCard from "./TaskCard";
+import ColumnDto from "@/models/dto/columnDto.type";
+import { useMemo } from "react";
+import { CSS } from "@dnd-kit/utilities";
+import ColumnContainer from "./ui/column-container";
+import SortableTaskCard from "./SortableTaskCard";
 
 export type ColumnProps = {
-  id: string;
-  title: string;
-  cards: Card[];
+  column: ColumnDto;
 };
 
-export default function Column({ id, title, cards }: ColumnProps) {
+export default function Column({ column }: { column: ColumnDto }) {
+  const { setNodeRef, attributes, listeners, transform, transition } =
+    useSortable({
+      id: `column-${column.column.id}`,
+      data: {
+        type: "column",
+        column: column,
+      },
+    });
 
-  const { setNodeRef, } = useSortable({
-    id,
-    data: {
-      type: "column",
-    }
-  });
+  const tasksIds = useMemo(
+    () => column.cards.map((task) => `task-${task.card.id}`),
+    [column, column.cards]
+  );
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
 
   return (
-    <SortableContext items={cards} strategy={verticalListSortingStrategy}>
-      <div ref={setNodeRef} className="bg-blue-600 p-2 m-2 rounded-lg flex-1 border border-black gap-2 flex flex-col">
-        <h2 className="text-xl text-white font-bold">{title}</h2>
-        {cards.map((card) => (
-          <TaskCard key={card.id} card={card} />
-        ))}
-      </div>
-    </SortableContext>
+    <div ref={setNodeRef} style={style} className="min-h-full flex bg-white ">
+      <ColumnContainer
+        title={column.column.name}
+        attributes={attributes}
+        listeners={listeners}
+      >
+        <SortableContext items={tasksIds}>
+          {column.cards.map((task) => (
+            <SortableTaskCard key={task.card.id} task={task}></SortableTaskCard>
+          ))}
+        </SortableContext>
+      </ColumnContainer>
+    </div>
   );
 }
