@@ -1,6 +1,7 @@
 import { useServiceContext } from "@/context/ServiceContext";
 import React from "react";
 import { Navigate } from "react-router-dom";
+import Header from "./Header";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -18,5 +19,10 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   authService.setLocalStorage(token, JSON.parse(user));
 
-  return children;
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 }

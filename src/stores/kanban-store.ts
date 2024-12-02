@@ -1,3 +1,4 @@
+import Board from "@/models/board.type";
 import CardDto from "@/models/dto/cardDto.type";
 import ColumnDto from "@/models/dto/columnDto.type";
 import { create } from "zustand";
@@ -5,6 +6,9 @@ import { create } from "zustand";
 type KanbanStore = {
   currentBoardId: string;
   columns: ColumnDto[];
+
+  kanbanList: Board[];
+  setKanbanList: (kanban: Board[]) => void;
 
   setCurrentBoardId: (id: string) => void;
 
@@ -22,6 +26,9 @@ type KanbanStore = {
 const useKanbanStore = create<KanbanStore>((set) => ({
   currentBoardId: "",
   columns: [],
+  kanbanList: [],
+
+  setKanbanList: (kanbanList: Board[]) => set({ kanbanList }),
 
   setCurrentBoardId: (id: string) => set({ currentBoardId: id }),
 

@@ -1,20 +1,17 @@
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
-import useLogOut from "@/hooks/useLogout";
+import useFetchAllKanban from "@/hooks/useFetchAllKanban";
+import KanbanList from "@/components/KanbanList";
+import KanbanListSkeleton from "@/components/Skeleton/KanbanListSkeleton";
 
 export default function Home() {
-  const logOut = useLogOut();
-  const navigate = useNavigate();
+  const { isLoading, error } = useFetchAllKanban();
 
-  return (
-    <div>
-      Kanban de poisson
-      <Button onClick={logOut}>Logout</Button>
-      <Button
-        onClick={() => navigate("/kanban/39bd32e9-f6be-4df7-aa48-92c5caac4ce8")}
-      >
-        kanban
-      </Button>
-    </div>
-  );
+  if (isLoading) {
+    return <KanbanListSkeleton />;
+  }
+
+  if (error) {
+    return <div>Erreur: {error}</div>;
+  }
+
+  return <KanbanList />;
 }
