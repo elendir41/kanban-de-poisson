@@ -2,7 +2,7 @@ import { useServiceContext } from "@/context/ServiceContext";
 import useKanbanStore from "@/stores/kanban-store";
 import { useEffect, useState } from "react";
 
-export default function useFetchKanban(boardId: string) {
+export default function useFetchSingleKanban(boardId: string) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,8 +15,6 @@ export default function useFetchKanban(boardId: string) {
     setCurrentBoardId(boardId);
 
     async function fetchKanban() {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       try {
         const kanban = await kanbanService.getBoard(boardId);
         if (kanban.error) {

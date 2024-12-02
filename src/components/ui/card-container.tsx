@@ -33,8 +33,8 @@ export default function CardContainer({
     const response = await onUpdate(card);
     if (response.data) {
       toast({ title: "La carte a été mise à jour" });
-      setTitle(response.data.card.title);
-      setBody(response.data.card.body);
+      setTitle(response.data.title);
+      setBody(response.data.body);
     } else {
       toast({ title: response.error.message, variant: "destructive" });
     }

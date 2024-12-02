@@ -1,15 +1,13 @@
 import { Button } from "./ui/button";
 import { Pen, Trash } from "lucide-react";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { useState } from "react";
@@ -18,10 +16,15 @@ import Card from "@/models/card.type";
 type TaskCardModalProps = {
   card: Card;
   onUpdate: (card: Card) => Promise<void>;
-  onDelete: (id: string) => Promise<void>
+  onDelete: (id: string) => Promise<void>;
 };
 
-export default function TaskCardModal({ card, onUpdate, onDelete }: TaskCardModalProps) {
+export default function TaskCardModal({
+  card,
+  onUpdate,
+  onDelete,
+}: TaskCardModalProps) {
+  const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(card.title);
   const [body, setBody] = useState(card.body);
 
@@ -33,6 +36,7 @@ export default function TaskCardModal({ card, onUpdate, onDelete }: TaskCardModa
       updatedAt: new Date().toISOString(),
     };
     onUpdate(updatedCard);
+    setOpen(false);
   };
 
   const handleDelete = () => {
@@ -40,16 +44,20 @@ export default function TaskCardModal({ card, onUpdate, onDelete }: TaskCardModa
   };
 
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="icon" className="absolute top-2 right-2">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className="absolute top-2 right-2"
+        >
           <Pen size={24} />
         </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Edit Task</AlertDialogTitle>
-        </AlertDialogHeader>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit Task</DialogTitle>
+        </DialogHeader>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
@@ -72,8 +80,16 @@ export default function TaskCardModal({ card, onUpdate, onDelete }: TaskCardModa
             />
           </div>
         </div>
-        <AlertDialogFooter className="mt-4">
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <DialogFooter className="mt-4">
+          <Button
+            variant="ghost"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(false);
+            }}
+          >
+            Annuler
+          </Button>
           <Button
             variant="destructive"
             onClick={handleDelete}
@@ -82,9 +98,9 @@ export default function TaskCardModal({ card, onUpdate, onDelete }: TaskCardModa
             <Trash size={16} />
             Delete
           </Button>
-          <AlertDialogAction onClick={handleSave}>Save</AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+          <Button onClick={handleSave}>Sauvegarder</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

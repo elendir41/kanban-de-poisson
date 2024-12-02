@@ -14,7 +14,7 @@ export default class KanbanService {
 
   async createBoard(name: string): Promise<Response<Board>> {
     try {
-      const response = await this.service.post<Board>(`/boards${name}`);
+      const response = await this.service.post<Board>(`/boards/${name}`);
       return { data: response.data };
     } catch (error) {
       return handleRequestError(error);
@@ -41,7 +41,7 @@ export default class KanbanService {
 
   async getAllBoards(): Promise<Response<Board[]>> {
     try {
-      const response = await this.service.get<Board[]>(`/boards`);
+      const response = await this.service.get<Board[]>(`/boards/`);
       return { data: response.data };
     } catch (error) {
       return handleRequestError(error);
