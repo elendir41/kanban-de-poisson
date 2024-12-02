@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Kanban from "./pages/Kanban";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./pages/404";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

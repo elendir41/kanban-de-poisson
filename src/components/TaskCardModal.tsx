@@ -42,7 +42,7 @@ export default function TaskCardModal({ card, onUpdate, onDelete }: TaskCardModa
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className="absolute top-2 right-2">
           <Pen size={24} />
         </Button>
       </AlertDialogTrigger>

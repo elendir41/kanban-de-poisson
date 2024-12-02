@@ -18,16 +18,17 @@ export default class AuthService {
     try {
       const res = await this.service.post(`login`, { username, password });
       const data = res.data as JwtResponse;
-
-      localStorage.setItem("token", data.jwt);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      this.service.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${data.jwt}`;
+      this.setLocalStorage(data.jwt, data.user);
       return { data: res.data };
     } catch (error) {
       return handleRequestError(error);
     }
+  };
+
+  setLocalStorage = (token: string, user: User) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+    this.service.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   };
 
   logout = () => {
