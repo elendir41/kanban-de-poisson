@@ -1,8 +1,17 @@
-import { Button } from "@/components/ui/button";
-import React from "react";
+import useFetchAllKanban from "@/hooks/useFetchAllKanban";
+import KanbanList from "@/components/KanbanList";
+import KanbanListSkeleton from "@/components/Skeleton/KanbanListSkeleton";
 
 export default function Home() {
-  return <div>Kanban de poisson
-    <Button />
-  </div>;
+  const { isLoading, error } = useFetchAllKanban();
+
+  if (isLoading) {
+    return <KanbanListSkeleton />;
+  }
+
+  if (error) {
+    return <div>Erreur: {error}</div>;
+  }
+
+  return <KanbanList />;
 }
