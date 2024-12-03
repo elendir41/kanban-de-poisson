@@ -5,7 +5,6 @@ import { createContext, useContext } from "react";
 type DragAndDropContextType = {
   columns: ColumnDto[];
 
-  rollBackColumns: () => void;
 
   moveTaskColumn: (
     activeId: string,

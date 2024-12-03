@@ -5,7 +5,8 @@ import TCard from "@/models/card.type";
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import useCrudCard from "@/hooks/useCrudCard";
-import { toast } from "@/hooks/use-toast";
+import { CardCreateFormType } from "@/models/schema/card-create-form.type";
+import useKanbanStore from "@/stores/kanban-store";
 
 type TaskCardProps = {
   card: TCard;
@@ -22,31 +23,33 @@ export default function CardContainer({
   style,
   attributes,
   listeners,
-  className
+  className,
 }: TaskCardProps) {
   const [title, setTitle] = useState(card.title);
   const [body, setBody] = useState(card.body);
-
+  const currentBoardId = useKanbanStore((state) => state.currentBoardId);
   const { onUpdate, onDelete } = useCrudCard();
 
-  const onUpdateCard = useCallback(async () => {
-    const response = await onUpdate(card);
-    if (response.data) {
-      toast({ title: "La carte a été mise à jour" });
-      setTitle(response.data.title);
-      setBody(response.data.body);
-    } else {
-      toast({ title: response.error.message, variant: "destructive" });
-    }
-  }, [card, title, body, onUpdate]);
+  const onUpdateCard = useCallback(
+    async (updatedCard: TCard) => {
+      const response = await onUpdate(updatedCard);
+      if (response) {
+        setTitle(response.title);
+        setBody(response.body);
+      }
+    },
+    [card, title, body, onUpdate]
+  );
 
   const onDeleteCard = useCallback(async () => {
-    const response = await onDelete(card.id);
-    if (response.data) {
-      toast({ title: "La carte a été supprimée" });
-    } else {
-      toast({ title: response.error.message, variant: "destructive" });
-    }
+    const cardForm: CardCreateFormType = {
+      title,
+      body,
+      columnId: card.columnId,
+      rank: card.rank,
+      boardId: currentBoardId,
+    };
+    await onDelete(card.id, cardForm);
   }, [card, onDelete]);
 
   return (
