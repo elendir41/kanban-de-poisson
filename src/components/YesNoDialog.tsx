@@ -1,13 +1,14 @@
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "@radix-ui/react-dialog";
-import React from "react";
-import { Button } from "./ui/button";
-import { DialogClose, DialogFooter, DialogHeader } from "./ui/dialog";
+  DialogClose,
+  DialogFooter,
+  DialogHeader,
+} from "./ui/dialog";
 import { Input } from "./ui/input";
 
 type YesNoDialogProps = {

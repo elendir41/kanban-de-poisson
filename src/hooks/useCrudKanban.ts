@@ -75,7 +75,7 @@ export default function useCrudKanban() {
       column: columnResponse.data,
       cards: [],
     };
-    addColumn(columnDto);
+    addColumn(columnDto.column);
   };
 
   return { onUpdate, onDelete, onCreate };
