@@ -87,7 +87,7 @@ export default function AddColumnContainer() {
           className="text-lg"
           onClick={handleStartEditing}
         >
-          Ajouter une colonne
+          + Ajouter une colonne
         </Button>
       </div>
     </Card>
