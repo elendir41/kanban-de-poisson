@@ -1,6 +1,5 @@
 import { handleRequestError } from "@/lib/utils";
 import Card from "@/models/card.type";
-import CardDto from "@/models/dto/cardDto.type";
 import Response from "@/models/response.type";
 import { CardCreateForm } from "@/models/schema/card-create-form.type";
 import StatusObjectCard from "@/models/status-object/satus-object-card.type";

@@ -1,7 +1,7 @@
 import Column from "@/components/Column";
 import SortableTaskCard from "@/components/SortableTaskCard";
 import { useDragAndDropContext } from "@/context/DragAndDropContext";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 import { validateDragEnd, validateDragOver } from "@/lib/utils";
 import CardDto from "@/models/dto/cardDto.type";
 import ColumnDto from "@/models/dto/columnDto.type";
@@ -23,7 +23,7 @@ import {
 import { useMemo, useState } from "react";
 
 export default function Board() {
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   const [draggedColumn, setDraggedColumn] = useState<ColumnDto | null>(null);
   const [draggedTask, setDraggedTask] = useState<CardDto | null>(null);
@@ -31,7 +31,7 @@ export default function Board() {
 
   const {
     columns,
-    rollBackColumns,
+    // rollBackColumns,
     moveTaskColumn,
     moveColumn,
     updateRankTask,
@@ -53,23 +53,23 @@ export default function Board() {
     })
   );
 
-  function rollback(type: "column" | "task") {
-    rollBackColumns();
-    setDraggedColumn(null);
-    setDraggedTask(null);
-    setCanDrag(false);
-    if (type === "column") {
-      toast({
-        title: "Impossible de mettre à jour la colonne",
-        variant: "destructive",
-      });
-    } else {
-      toast({
-        title: "Impossible de mettre à jour la tâche",
-        variant: "destructive",
-      });
-    }
-  }
+  // function rollback(type: "column" | "task") {
+  //   rollBackColumns();
+  //   setDraggedColumn(null);
+  //   setDraggedTask(null);
+  //   setCanDrag(false);
+  //   if (type === "column") {
+  //     toast({
+  //       title: "Impossible de mettre à jour la colonne",
+  //       variant: "destructive",
+  //     });
+  //   } else {
+  //     toast({
+  //       title: "Impossible de mettre à jour la tâche",
+  //       variant: "destructive",
+  //     });
+  //   }
+  // }
 
   function handleDragStart(event: DragStartEvent) {
     setCanDrag(true);

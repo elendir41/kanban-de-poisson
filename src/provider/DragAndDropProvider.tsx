@@ -17,7 +17,6 @@ export default function DragAndDropProvider({
   const columnsDefault = useKanbanStore((state) => state.columns);
 
   const [columns, setColumns] = useState(columnsDefault);
-  const [canDrag, setCanDrag] = useState(true);
   function rollBackColumns() {
     setColumns(columnsDefault);
   }
