@@ -79,8 +79,8 @@ export default function KanbanCard({
           )}
         </CardHeader>
         <Separator className="bg-gray-300" />
-        <CardContent className="flex-1 flex items-center justify-center py-4">
-          <CardDescription className="text-base font-medium text-gray-700">
+        <CardContent className="flex-1 flex items-center justify-center py-4 h-16">
+          <CardDescription className="font-medium text-gray-700">
             {kanbanName}
           </CardDescription>
         </CardContent>
