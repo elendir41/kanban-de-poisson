@@ -66,7 +66,7 @@ export default function KanbanCard({
           <DeleteModal onDelete={confirmDelete} type="kanban" />
         </div>
       )}
-      <div onClick={disableHover ? undefined : handleCardClick}>
+      <div className="h-full" onClick={disableHover ? undefined : handleCardClick}>
         <CardHeader className="h-4/6 flex items-center justify-center pb-2">
           {title === "+" ? (
             <CardTitle className="text-4xl">{title}</CardTitle>
