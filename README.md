@@ -1,50 +1,26 @@
-# React + TypeScript + Vite
+# Kanban de poisson
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Auteurs
 
-Currently, two official plugins are available:
+matteo.perisse<br>jean.barbaroux<br>alexis1.papagno<br>clement.do-rosario
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Description
+Kanban de poisson est un site de gestionnaire de kanban permettant d'ajouter des colonnes, des taches à faire et les ordonner grâce à du drag and drop
 
-## Expanding the ESLint configuration
+## Architecture du projet
+Le dossier pages/ contient toutes les pages accessibles dans l'application.<br>
+Certaines sont publiques et d'autre privées en fonction de si l'utilisateur est authentifié ou non en fonction d'un token set dans le localstorage.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Le projet est séparé en plusieurs couches.<br>
+- La couche la plus basse est celle des services. Ils sont gérés via un context pour faire de l'injection de dépendance.
 
-- Configure the top-level `parserOptions` property like this:
+- Ces services sont ensuites utilisés dans des hooks permettant de traiter et de faire remonter les infos via les states gérés grâce à Zustand ou d'autre context.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- Les composants du dossier components/ utilisent ces hooks pour mettre à jour les données et utilisent les composants du dossier components/ui/ pour gérer le ui.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Drag and Drop
+Le drag and drop est géré via la librairie dnd-kit.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+Le drag and drop permet de réorganiser les différentes taches et colonnes d'un kanban.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Pour une réactivité accrue, le design pattern optimistic est utilisé. De ce fait, il y a deux états des colonnes et taches dans l'appli. Le premier permettant d'afficher rapidement les changements et l'autre permettant de faire un rollback en cas d'erreur lors d'un call api.
