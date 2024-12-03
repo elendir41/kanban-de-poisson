@@ -7,7 +7,25 @@ matteo.perisse<br>jean.barbaroux<br>alexis1.papagno<br>clement.do-rosario
 ## Description
 Kanban de poisson est un site de gestionnaire de kanban permettant d'ajouter des colonnes, des taches à faire et les ordonner grâce à du drag and drop
 
+## Usage:
+`npm install`
+
+Dev:<br>
+`npm run dev`
+
+Build:<br>
+`npm run build`<br>
+`npm run preview`
+
+Storybook:<br>
+`npm run storybook`
+
+Test:<br>
+`npm run tests`
+
 ## Architecture du projet
+Kanban de poisson a été developpé avec vite.
+
 Le dossier pages/ contient toutes les pages accessibles dans l'application.<br>
 Certaines sont publiques et d'autre privées en fonction de si l'utilisateur est authentifié ou non en fonction d'un token set dans le localstorage.
 
