@@ -11,7 +11,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { UpdateKanbanSchemaType } from "@/models/schema/update-kanban-form.type";
 import { getFishImage, getPastelColor } from "@/lib/KanbanCardStyle";
-import DeleteKanbanModal from "./DeleteKanbanModal";
+import DeleteModal from "./DeleteModal";
 import EditKanbanModal from "./EditKanbanModal";
 import useCrudKanban from "@/hooks/useCrudKanban";
 
@@ -64,7 +64,7 @@ export default function KanbanCard({
       {editable && (
         <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
           <EditKanbanModal kanbanName={kanbanName} onSubmit={onSubmit} />
-          <DeleteKanbanModal onDelete={confirmDelete} />
+          <DeleteModal onDelete={confirmDelete} type="kanban" />
         </div>
       )}
       <CardHeader className="h-4/6 flex items-center justify-center pb-2">

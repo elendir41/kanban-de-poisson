@@ -24,7 +24,7 @@ export default class ColumnService {
 
   async updateColumn(column: Column): Promise<Response<Column>> {
     try {
-      const response = await this.service.put<Column>(`/columns`, column);
+      const response = await this.service.put<Column>(`/columns/`, column);
       return { data: response.data };
     } catch (error) {
       return handleRequestError(error);
