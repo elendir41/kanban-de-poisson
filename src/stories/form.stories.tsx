@@ -41,34 +41,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// const Template: Story = (args) => {
-//   const methods = useForm();
-//   return (
-//     <Form {...args} {...methods}>
-//       <FormItem>
-//         <FormLabel>Label</FormLabel>
-//         <FormControl as="input" name="example" />
-//         <FormDescription>Description</FormDescription>
-//         <FormMessage>Error message</FormMessage>
-//       </FormItem>
-//     </Form>
-//   );
-// };
-
-// export const Default: Story = Template.bind({});
-// Default.args = {
-//   children: (
-//     <FormField name="example">
-//       <FormItem>
-//         <FormLabel>Label</FormLabel>
-//         <FormControl as="input" />
-//         <FormDescription>Description</FormDescription>
-//         <FormMessage>Error message</FormMessage>
-//       </FormItem>
-//     </FormField>
-//   ),
-// };
-
 export const Default: Story = {
   args: {
   }

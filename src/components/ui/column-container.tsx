@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import DeleteModal from "../DeleteModal";
 import { Card, CardContent, CardHeader } from "./card";
 import EditColumnDialog from "../EditColumnDialog";
+import { Separator } from "@radix-ui/react-separator";
 
 type ColumnContainerProps = {
   title: string;
@@ -33,6 +34,7 @@ export default function ColumnContainer({
           <DeleteModal type="column" onDelete={onDelete} />
         </div>
       </CardHeader>
+      <Separator className="bg-gray-400 h-[1px] mx-3"/>
       <CardContent className="overflow-auto flex flex-col gap-2 p-3">{children}</CardContent>
     </Card>
   );

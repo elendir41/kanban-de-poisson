@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -97,10 +98,12 @@ export default function EditColumnDialog({ columnId }: EditColumnDialogProps) {
                 </FormItem>
               )}
             />
-            <Button variant="ghost" onClick={() => setOpen(false)}>
-              Annuler
-            </Button>
-            <Button type="submit">Sauvegarder</Button>
+            <DialogFooter>
+              <Button variant="ghost" onClick={() => setOpen(false)}>
+                Annuler
+              </Button>
+              <Button type="submit">Sauvegarder</Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>
