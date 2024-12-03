@@ -1,0 +1,11 @@
+services:
+  react:
+    container_name: kanban-front
+    build: .
+    ports:
+      - 8081:80
+
+    networks:
+      - kanban-network
+networks:
+  kanban-network:

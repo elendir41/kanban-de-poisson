@@ -81,6 +81,7 @@ export const getFishImage = (title: string = "") => {
     "0": "fish16.svg",
   };
   const firstChar = title.charAt(0).toUpperCase();
-  return fishMap[firstChar] || "fish1.svg";
+  const fileName =  fishMap[firstChar] || "fish1.svg";
+  return  new URL(`../assets/fish/${fileName}`, import.meta.url).href;
 };
 

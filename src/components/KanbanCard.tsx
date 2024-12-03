@@ -72,7 +72,7 @@ export default function KanbanCard({
             <CardTitle className="text-4xl">{title}</CardTitle>
           ) : (
             <img
-              src={`/public/${fishImage}`}
+              src={`${fishImage}`}
               alt={kanbanName}
               className="w-24 h-24"
             />
