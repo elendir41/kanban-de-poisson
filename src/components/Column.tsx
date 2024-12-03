@@ -48,7 +48,7 @@ export default function Column({ columnId, isOnDrag }: ColumnProps) {
   if (!column) return null;
 
   return (
-    <div ref={setNodeRef} style={style} className={`min-h-full flex bg-white ${isOnDrag ? 'opacity-50' : 'opacity-100'}`}>
+    <div ref={setNodeRef} style={style} className={`min-h-full flex ${isOnDrag ? 'opacity-50' : 'opacity-100'}`}>
       <ColumnContainer
         title={column.column.name}
         columnId={column.column.id}
