@@ -22,6 +22,7 @@ import {
 import { useMemo, useState } from "react";
 import AddColumnContainer from "./AddColumnContainer";
 import useKanbanStore from "@/stores/kanban-store";
+import Bubbles from "./ui/bubbles";
 
 export default function Board() {
   const [draggedColumn, setDraggedColumn] = useState<ColumnDto | null>(null);
@@ -114,7 +115,8 @@ export default function Board() {
   }
 
   return (
-    <div className="h-full">
+    <div className="h-full relative">
+      <Bubbles className='h-full w-full absolute inset-0 z-[-10]' />
       <div className="w-full p-2 flex justify-center">
         <h1 className="text-xl font-bold">{boardName}</h1>
       </div>

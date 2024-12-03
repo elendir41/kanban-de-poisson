@@ -21,7 +21,6 @@ export default function useCrudColumn() {
         variant: "destructive",
       });
     } else {
-      // updateColumn(response.data);
       return response.data;
     }
   };

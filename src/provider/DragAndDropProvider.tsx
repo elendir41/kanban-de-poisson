@@ -108,7 +108,6 @@ export default function DragAndDropProvider({
     const oldRank = movingCol.column.rank;
     movingCol.column.rank = movedCol.column.rank;
     movedCol.column.rank = oldRank;
-    // call api update column and rollback if error
     const response1 = await onColumnUpdate(movingCol.column);
     const response2 = await onColumnUpdate(movedCol.column);
     if (!response1 || !response2) {

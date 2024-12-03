@@ -47,7 +47,7 @@ export default function Column({ columnId }: ColumnProps) {
   if (!column) return null;
 
   return (
-    <div ref={setNodeRef} style={style} className="min-h-full flex bg-white">
+    <div ref={setNodeRef} style={style} className="min-h-full flex">
       <ColumnContainer
         title={column.column.name}
         columnId={column.column.id}

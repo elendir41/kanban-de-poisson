@@ -64,7 +64,6 @@ export default function useCrudCard() {
         boardId: currentBoardId,
       };
       return cardDto;
-      // moveTo(cardId, newColumnId, cardDto);
     } else {
       toast({
         title: "Une erreur est survenue",

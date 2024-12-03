@@ -27,6 +27,5 @@ const RegisterCredentialsSchema = z.object({
 
 type RegisterCredentials = z.infer<typeof RegisterCredentialsSchema>;
 
-// Export des schémas et des types
 export {LoginCredentialsSchema, RegisterCredentialsSchema};
 export type {LoginCredentials, RegisterCredentials};
