@@ -9,9 +9,10 @@ import { useDragAndDropContext } from "@/context/DragAndDropContext";
 
 export type ColumnProps = {
   columnId: string;
+  isOnDrag?: boolean;
 };
 
-export default function Column({ columnId }: ColumnProps) {
+export default function Column({ columnId, isOnDrag }: ColumnProps) {
   const { onDelete } = useCrudColumn();
   const { columns } = useDragAndDropContext();
 
@@ -47,7 +48,7 @@ export default function Column({ columnId }: ColumnProps) {
   if (!column) return null;
 
   return (
-    <div ref={setNodeRef} style={style} className="min-h-full flex">
+    <div ref={setNodeRef} style={style} className={`min-h-full flex bg-white ${isOnDrag ? 'opacity-50' : 'opacity-100'}`}>
       <ColumnContainer
         title={column.column.name}
         columnId={column.column.id}

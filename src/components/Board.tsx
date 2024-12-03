@@ -132,7 +132,8 @@ export default function Board() {
             {columns
               .sort((a, b) => a.column.rank - b.column.rank)
               .map((column) => (
-                <Column key={column.column.id} columnId={column.column.id} />
+                <Column key={column.column.id} columnId={column.column.id}
+                        isOnDrag={draggedColumn?.column.id === column.column.id}/>
               ))}
           </SortableContext>
           <AddColumnContainer />
