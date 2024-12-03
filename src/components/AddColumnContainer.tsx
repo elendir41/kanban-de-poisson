@@ -44,7 +44,7 @@ export default function AddColumnContainer() {
   }
 
   return (
-    <Card className="min-h-full flex p-6 bg-gray-100 w-80 bg-opacity-20">
+    <Card className="min-h-full flex p-6 bg-gray-50 w-80 z-10">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
