@@ -1,11 +1,13 @@
 import { DragAndDropContext } from "@/context/DragAndDropContext";
+import useCrudCard from "@/hooks/useCrudCard";
+import useCrudColumn from "@/hooks/useCrudColumn";
 import { extractId } from "@/lib/utils";
 import { TaksData } from "@/models/DragData.type";
 import CardDto from "@/models/dto/cardDto.type";
 import ColumnDto from "@/models/dto/columnDto.type";
 import useKanbanStore from "@/stores/kanban-store";
 import { arrayMove } from "@dnd-kit/sortable";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type DragAndDropProviderProps = {
   children: React.ReactNode;
@@ -15,73 +17,117 @@ export default function DragAndDropProvider({
   children,
 }: DragAndDropProviderProps) {
   const columnsDefault = useKanbanStore((state) => state.columns);
+  const setDefaultColumns = useKanbanStore((state) => state.setColumns);
+
+  const { onUpdate: onUpdateTask, onMoveTo: onMoveToTask } = useCrudCard();
+  const { onUpdate: onColumnUpdate } = useCrudColumn();
 
   const [columns, setColumns] = useState(columnsDefault);
-  const [canDrag, setCanDrag] = useState(true);
-  function rollBackColumns() {
+
+  useEffect(() => {
+    refreshColumns();
+  }, [columnsDefault]);
+
+  function refreshColumns() {
     setColumns(columnsDefault);
   }
 
-  function moveTaskColumn(
+  function saveState(newColumns: ColumnDto[]) {
+    setDefaultColumns(newColumns);
+  }
+
+  async function moveTaskColumn(
     activeId: string,
     activeData: TaksData,
     overId: string,
     overColumnId: string
   ) {
     const activeColumnId = activeData.task.card.columnId;
-    setColumns((cols) => {
-      const activeColumn = cols.find((col) => col.column.id === activeColumnId);
-      const overColumn = cols.find((col) => col.column.id === overColumnId);
-      if (!activeColumn || !overColumn) {
-        return cols;
+    const activeColumn = columns.find(
+      (col) => col.column.id === activeColumnId
+    );
+    const overColumn = columns.find((col) => col.column.id === overColumnId);
+    if (!activeColumn || !overColumn) {
+      return;
+    }
+    const newActiveColumn: ColumnDto = {
+      ...activeColumn,
+      cards: activeColumn.cards.filter((task) => task.card.id !== activeId),
+    };
+    const updatedTask: CardDto = {
+      ...activeData.task,
+      card: { ...activeData.task.card, columnId: overColumnId },
+    };
+    const isEmpty = overColumn.cards.length === 0;
+    const overIndex = overColumn.cards.findIndex(
+      (task) => task.card.id === overId
+    );
+    const newOverColumn: ColumnDto = {
+      ...overColumn,
+      cards: isEmpty
+        ? [updatedTask]
+        : [
+            ...overColumn.cards.slice(0, overIndex),
+            updatedTask,
+            ...overColumn.cards.slice(overIndex, overColumn.cards.length),
+          ],
+    };
+    const newColunms = columns.map((col) => {
+      if (col.column.id === activeColumnId) {
+        return newActiveColumn;
+      } else if (col.column.id === overColumnId) {
+        return newOverColumn;
       }
-      const newActiveColumn: ColumnDto = {
-        ...activeColumn,
-        cards: activeColumn.cards.filter((task) => task.card.id !== activeId),
-      };
-      const updatedTask: CardDto = {
-        ...activeData.task,
-        card: { ...activeData.task.card, columnId: overColumnId },
-      };
-      const isEmpty = overColumn.cards.length === 0;
-      const overIndex = overColumn.cards.findIndex(
-        (task) => task.card.id === overId
-      );
-      const newOverColumn: ColumnDto = {
-        ...overColumn,
-        cards: isEmpty
-          ? [updatedTask]
-          : [
-              ...overColumn.cards.slice(0, overIndex),
-              updatedTask,
-              ...overColumn.cards.slice(overIndex, overColumn.cards.length),
-            ],
-      };
-      return cols.map((col) => {
-        if (col.column.id === activeColumnId) {
-          return newActiveColumn;
-        } else if (col.column.id === overColumnId) {
-          return newOverColumn;
+      return col;
+    });
+    setColumns(newColunms);
+    const response = await onMoveToTask(
+      activeId,
+      overColumnId,
+      activeData.task.card
+    );
+    if (!response) {
+      refreshColumns();
+    } else {
+      saveState(newColunms);
+    }
+  }
+
+  async function moveColumn(activeId: string, overId: string) {
+    const activeColumnId = extractId(activeId);
+    const overColumnId = extractId(overId);
+    const oldIndex = columns.findIndex(
+      (col) => col.column.id === activeColumnId
+    );
+    const newIndex = columns.findIndex((col) => col.column.id === overColumnId);
+    const movingCol = columns[oldIndex];
+    const movedCol = columns[newIndex];
+    setColumns((cols) => {
+      return arrayMove(cols, oldIndex, newIndex);
+    });
+    const oldRank = movingCol.column.rank;
+    movingCol.column.rank = movedCol.column.rank;
+    movedCol.column.rank = oldRank;
+    // call api update column and rollback if error
+    const response1 = await onColumnUpdate(movingCol.column);
+    const response2 = await onColumnUpdate(movedCol.column);
+    if (!response1 || !response2) {
+      refreshColumns();
+    } else {
+      const newColumns = columns.map((col) => {
+        if (col.column.id === response1.id) {
+          return { column: response1, cards: col.cards };
+        }
+        if (col.column.id === response2.id) {
+          return { column: response2, cards: col.cards };
         }
         return col;
       });
-    });
+      saveState(newColumns);
+    }
   }
 
-  function moveColumn(activeId: string, overId: string) {
-    const activeColumnId = extractId(activeId);
-    const overColumnId = extractId(overId);
-    setColumns((cols) => {
-      const oldIndex = cols.findIndex(
-        (col) => col.column.id === activeColumnId
-      );
-      const newIndex = cols.findIndex((col) => col.column.id === overColumnId);
-      return arrayMove(cols, oldIndex, newIndex);
-    });
-    // call api update column and rollback if error
-  }
-
-  function updateRankTask(
+  async function updateRankTask(
     activeId: string,
     overId: string,
     activeData: TaksData,
@@ -96,38 +142,42 @@ export default function DragAndDropProvider({
     }
 
     if (activeColumnId === overColumnId) {
-      // call api update task
-      setColumns((cols) => {
-        const activeColumn = cols.find(
-          (col) => col.column.id === activeColumnId
-        );
-        if (!activeColumn) {
-          return cols;
+      const activeColumn = columns.find(
+        (col) => col.column.id === activeColumnId
+      );
+      if (!activeColumn) {
+        return;
+      }
+      const activeIndex = activeColumn.cards.findIndex(
+        (task) => task.card.id === activeTaskId
+      );
+      const overIndex = activeColumn.cards.findIndex(
+        (task) => task.card.id === overTaskId
+      );
+      const newColumns = columns.map((col) => {
+        if (col.column.id === activeColumnId) {
+          return {
+            ...col,
+            cards: arrayMove(col.cards, activeIndex, overIndex),
+          };
         }
-        const activeIndex = activeColumn.cards.findIndex(
-          (task) => task.card.id === activeTaskId
-        );
-        const overIndex = activeColumn.cards.findIndex(
-          (task) => task.card.id === overTaskId
-        );
-        return cols.map((col) => {
-          if (col.column.id === activeColumnId) {
-            return {
-              ...col,
-              cards: arrayMove(col.cards, activeIndex, overIndex),
-            };
-          }
-          return col;
-        });
+        return col;
       });
-      return;
+      setColumns(newColumns);
+      const card = activeData.task.card;
+      card.rank = overIndex;
+      const response = await onUpdateTask(card);
+      if (!response) {
+        refreshColumns();
+      } else {
+        saveState(newColumns);
+      }
     }
   }
   return (
     <DragAndDropContext.Provider
       value={{
         columns,
-        rollBackColumns,
         moveTaskColumn,
         moveColumn,
         updateRankTask,

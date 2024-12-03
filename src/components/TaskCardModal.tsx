@@ -16,7 +16,7 @@ import Card from "@/models/card.type";
 type TaskCardModalProps = {
   card: Card;
   onUpdate: (card: Card) => Promise<void>;
-  onDelete: (id: string) => Promise<void>;
+  onDelete: () => Promise<void>;
 };
 
 export default function TaskCardModal({
@@ -40,7 +40,8 @@ export default function TaskCardModal({
   };
 
   const handleDelete = () => {
-    onDelete(card.id);
+    onDelete();
+    setOpen(false);
   };
 
   return (
@@ -56,7 +57,7 @@ export default function TaskCardModal({
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Task</DialogTitle>
+          <DialogTitle>Modifer la card</DialogTitle>
         </DialogHeader>
         <div className="space-y-4">
           <div>
@@ -96,7 +97,7 @@ export default function TaskCardModal({
             className="flex items-center gap-2"
           >
             <Trash size={16} />
-            Delete
+            Supprimer
           </Button>
           <Button onClick={handleSave}>Sauvegarder</Button>
         </DialogFooter>

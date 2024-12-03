@@ -1,28 +1,39 @@
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { ReactNode } from "react";
+import DeleteModal from "../DeleteModal";
+import { Card, CardContent, CardHeader } from "./card";
+import EditColumnDialog from "../EditColumnDialog";
 
 type ColumnContainerProps = {
   title: string;
+  columnId: string;
   attributes?: DraggableAttributes;
   listeners?: SyntheticListenerMap;
+  onDelete: () => void;
   children: ReactNode;
 };
 
-export default function ColumnContainer({title, attributes, listeners, children }: ColumnContainerProps) {
+export default function ColumnContainer({
+  title,
+  columnId,
+  attributes,
+  listeners,
+  onDelete,
+  children,
+}: ColumnContainerProps) {
   return (
-    <div className="min-h-full flex flex-col gap-2 p-4 rounded border border-black bg-white">
-      <h2
-        {...attributes}
-        {...listeners}
-        className="bg-gray-600 p-3 w-full rounded text-white min-w-48"
-      >
-        {title}
-      </h2>
-      <div className="overflow-auto flex flex-col gap-2">
-        {children}
-      </div>
-    </div>
-  )
+    <Card className="min-h-full flex flex-col bg-gray-100 w-80">
+      <CardHeader className="p-3">
+        <div className="w-full rounded flex justify-between items-center">
+          <h2 {...attributes} {...listeners} className=" min-w-48">
+            {title}
+          </h2>
+          <EditColumnDialog columnId={columnId}/>
+          <DeleteModal type="column" onDelete={onDelete} />
+        </div>
+      </CardHeader>
+      <CardContent className="overflow-auto flex flex-col gap-2 p-3">{children}</CardContent>
+    </Card>
+  );
 }
-

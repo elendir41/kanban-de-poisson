@@ -11,11 +11,26 @@ import {
 } from "./ui/dialog";
 import { Trash2 } from "lucide-react";
 
-type DeleteKanbanModalProps = {
+type DeleteModalProps = {
   onDelete: () => void;
+  type: "kanban" | "column" | "card";
 };
 
-export default function DeleteKanbanModal({ onDelete }: DeleteKanbanModalProps) {
+function typeToTitle(type: DeleteModalProps["type"]) {
+  switch (type) {
+    case "kanban":
+      return "ce Kanban";
+    case "column":
+      return "cette Colonne";
+    case "card":
+      return "cette Carte";
+  }
+}
+
+export default function DeleteModal({
+  onDelete,
+  type,
+}: DeleteModalProps) {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   return (
@@ -37,7 +52,7 @@ export default function DeleteKanbanModal({ onDelete }: DeleteKanbanModalProps) 
         <DialogHeader>
           <DialogTitle>Confirmer la suppression</DialogTitle>
           <DialogDescription>
-            Êtes-vous sûr de vouloir supprimer ce Kanban ?
+            Êtes-vous sûr de vouloir supprimer {typeToTitle(type)} ?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -54,6 +69,7 @@ export default function DeleteKanbanModal({ onDelete }: DeleteKanbanModalProps) 
             variant="destructive"
             onClick={(e) => {
               e.stopPropagation();
+              setDeleteDialogOpen(false);
               onDelete();
             }}
           >
