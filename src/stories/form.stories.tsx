@@ -42,7 +42,6 @@ Default.args = {
     <FormField name="example">
       <FormItem>
         <FormLabel>Label</FormLabel>
-        <FormControl as="input" />
         <FormDescription>Description</FormDescription>
         <FormMessage>Error message</FormMessage>
       </FormItem>
