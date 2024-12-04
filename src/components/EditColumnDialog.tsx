@@ -56,6 +56,7 @@ export default function EditColumnDialog({ columnId }: EditColumnDialogProps) {
     if (response) {
       updateColumn(response);
     }
+    form.reset();
   }
 
   if (!column) return null;

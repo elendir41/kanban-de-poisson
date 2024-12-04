@@ -50,6 +50,7 @@ export default function AddCardModal({ columnId, rank }: AddCardModalProps) {
   async function onSubmit(data: CardCreateFormType) {
     setOpen(false);
     onCreate(data);
+    form.reset();
   }
 
   return (

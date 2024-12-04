@@ -36,6 +36,7 @@ export default function EditKanbanModal({
   function handleSumbit(data: UpdateKanbanSchemaType) {
     onSubmit(data);
     setOpen(false);
+    form.reset();
   }
 
   const [open, setOpen] = useState(false);
