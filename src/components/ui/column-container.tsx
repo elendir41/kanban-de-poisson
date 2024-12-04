@@ -13,6 +13,7 @@ type ColumnContainerProps = {
   listeners?: SyntheticListenerMap;
   onDelete: () => void;
   children: ReactNode;
+  editable?: boolean;
 };
 
 export default function ColumnContainer({
@@ -22,6 +23,7 @@ export default function ColumnContainer({
   listeners,
   onDelete,
   children,
+  editable
 }: ColumnContainerProps) {
   return (
     <Card className="min-h-full flex flex-col bg-gray-100 w-80">
@@ -30,8 +32,12 @@ export default function ColumnContainer({
           <h2 {...attributes} {...listeners} className=" min-w-48">
             {title}
           </h2>
-          <EditColumnDialog columnId={columnId}/>
-          <DeleteModal type="column" onDelete={onDelete} />
+          {editable &&
+            <>
+              <EditColumnDialog columnId={columnId}/>
+              <DeleteModal type="column" onDelete={onDelete}/>
+            </>
+          }
         </div>
       </CardHeader>
       <Separator className="bg-gray-400 h-[1px] mx-3"/>

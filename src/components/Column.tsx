@@ -55,6 +55,7 @@ export default function Column({ columnId, isOnDrag }: ColumnProps) {
         attributes={attributes}
         listeners={listeners}
         onDelete={handleDelete}
+        editable={true}
       >
         <SortableContext items={tasksIds}>
           {column.cards.map((task) => (
